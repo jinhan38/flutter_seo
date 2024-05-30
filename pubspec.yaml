@@ -1,8 +1,7 @@
 name: flutter_seo
 description: "Flutter SEO package"
-version: 0.0.1
+version: 0.0.2
 homepage: 'https://github.com/jinhan38/flutter_seo'
-publish_to: 'https://pub.dev/publishers/jinhan38.com'
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
