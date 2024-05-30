@@ -12,3 +12,6 @@ Readme edited
 
 ## 0.0.5
 Add sample site
+
+## 0.0.6
+Readme edited

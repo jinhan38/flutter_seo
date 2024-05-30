@@ -3,7 +3,7 @@
 
 You can use the flutter_seo package to add tags to your html, which you can use to try SEO optimization.
 
-You can see that meta data is added to the sample below, and you can check that html tml tml tml tml tml tagy.
+On the site made with the sample below, you can see that meta data is added to the head and html tag is created on the body.
  https://seo-package-sample.web.app/
 
 ## Usage
