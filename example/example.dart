@@ -12,12 +12,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     addMetaTag();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        BodyTagUtil.init();
-      },
-    );
+    BodyTagUtil.init();
+
     return MaterialApp(
       navigatorObservers: [routeObserver],
       title: '',
@@ -34,8 +32,12 @@ class MyApp extends StatelessWidget {
                 },
                 child: const Text("Body HTML Update ")),
             const Text("Check 1").seoH1,
-            const Text("Check 2").seoH3,
-            const Text("Check 3").seoH5,
+            const Text("Check 2").seoH2,
+            const Text("Check 3").seoH3,
+            const Text("Check 4").seoH4,
+            const Text("Check 5").seoH5,
+            const Text("Check 6").seoH6,
+            const Text("Check P").seoP,
           ],
         ),
       ),

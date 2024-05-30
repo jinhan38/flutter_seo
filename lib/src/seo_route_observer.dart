@@ -1,12 +1,22 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 
 import 'body_tag_util.dart';
 
 class SeoRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 
+  bool first = true;
+
+
   void _sendScreenView(PageRoute<dynamic> route) {
+    if (first) {
+      first = false;
+      return;
+    }
     BodyTagUtil.init();
   }
+
 
   @override
   void didPush(Route route, Route? previousRoute) {

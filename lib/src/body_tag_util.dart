@@ -10,20 +10,24 @@ class BodyTagUtil {
 
   static final _bodyValidator = NodeValidatorBuilder()
     ..allowHtml5(uriPolicy: AllowAllUriPolicy())
-    ..allowCustomElement(myTag)
-    ..allowCustomElement('noscript')
-    ..allowCustomElement('h1', attributes: ['style'])
-    ..allowCustomElement('h2', attributes: ['style'])
-    ..allowCustomElement('h3', attributes: ['style'])
-    ..allowCustomElement('h4', attributes: ['style'])
-    ..allowCustomElement('h5', attributes: ['style'])
-    ..allowCustomElement('h6', attributes: ['style'])
-    ..allowCustomElement('p', attributes: ['style'])
-    ..allowCustomElement('a', attributes: ['rel']);
+    ..allowCustomElement(myTag)..allowCustomElement(
+        'noscript')..allowCustomElement(
+        'h1', attributes: ['style'])..allowCustomElement(
+        'h2', attributes: ['style'])..allowCustomElement(
+        'h3', attributes: ['style'])..allowCustomElement(
+        'h4', attributes: ['style'])..allowCustomElement(
+        'h5', attributes: ['style'])..allowCustomElement(
+        'h6', attributes: ['style'])..allowCustomElement(
+        'p', attributes: ['style'])..allowCustomElement(
+        'a', attributes: ['rel']);
 
   static void init() {
     if (document.body == null) return;
-    clear();
+    var isEmpty = document.body!
+        .children
+        .where((element) => element.localName == myTag)
+        .isEmpty;
+    if (!isEmpty) clear();
     document.body?.insertAdjacentHtml(
       'afterBegin',
       '<$myTag></$myTag>',
@@ -39,10 +43,12 @@ class BodyTagUtil {
   static Text add(Text child, ParentTag parentTag) {
     var myElement = document.body!.children
         .where((element) => element.localName == myTag)
-        .where((element) => element.children.every((e) =>
-            checkTagType(e.localName, e.text.toString()).changeToHtml() !=
+        .where((element) =>
+        element.children.every((e) =>
+        checkTagType(e.localName, e.text.toString()).changeToHtml() !=
             parentTag.changeToHtml()))
         .toList();
+
     if (myElement.isEmpty) return child;
     myElement.first.insertAdjacentHtml('beforeend', parentTag.changeToHtml(),
         validator: _bodyValidator);
@@ -57,7 +63,7 @@ class BodyTagUtil {
         .toList()
         .expand((tag) => tag.children)
         .map((child) =>
-            checkTagType(child.localName, child.text.toString()).changeToHtml())
+        checkTagType(child.localName, child.text.toString()).changeToHtml())
         .join();
 
     body.children.removeWhere((element) => element.localName == myTag);

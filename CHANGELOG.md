@@ -9,3 +9,6 @@ Remove hash check logic
 
 ## 0.0.4
 Readme edited
+
+## 0.0.5
+Add sample site

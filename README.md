@@ -3,6 +3,8 @@
 
 You can use the flutter_seo package to add tags to your html, which you can use to try SEO optimization.
 
+You can see that meta data is added to the sample below, and you can check that html tml tml tml tml tml tagy.
+ https://seo-package-sample.web.app/
 
 ## Usage
 
@@ -24,32 +26,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    addMetaTag();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      BodyTagUtil.init();
-    },);
-    return MaterialApp(
-      navigatorObservers: [routeObserver],
-      title: '',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: Scaffold(
-        body: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  BodyTagUtil.update();
-                },
-                child: const Text("Body HTML Update ")),
-            const Text("Check 1").seoH1,
-            const Text("Check 2").seoH3,
-            const Text("Check 3").seoH5,
-          ],
-        ),
-      ),
-    );
+    
+   addMetaTag();
+   BodyTagUtil.init();
+   
+   return MaterialApp(
+    navigatorObservers: [routeObserver],
+    title: '',
+    theme: ThemeData(
+     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+     useMaterial3: true,
+    ),
+    home: Scaffold(
+     body: Column(
+      children: [
+       ElevatedButton(
+               onPressed: () {
+                BodyTagUtil.update();
+               },
+               child: const Text("Body HTML Update ")),
+       const Text("Check 1").seoH1,
+       const Text("Check 2").seoH2,
+       const Text("Check 3").seoH3,
+       const Text("Check 4").seoH4,
+       const Text("Check 5").seoH5,
+       const Text("Check 6").seoH6,
+       const Text("Check P").seoP,
+      ],
+     ),
+    ),
+   );
   }
 
   void addMetaTag() {
