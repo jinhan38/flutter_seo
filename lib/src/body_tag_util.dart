@@ -21,13 +21,19 @@ class BodyTagUtil {
     ..allowCustomElement('p', attributes: ['style'])
     ..allowCustomElement('a', attributes: ['rel']);
 
+  static int _bodyHash = 0;
+
   static void init() {
+    var hash = document.body?.hashCode;
+    if (hash == null || hash == _bodyHash) return;
+    _bodyHash = hash;
     clear();
     document.body?.insertAdjacentHtml(
       'afterBegin',
       '<$myTag></$myTag>',
       validator: _bodyValidator,
     );
+    print('BodyTagUtil.init');
   }
 
   static void clear() {
@@ -39,8 +45,8 @@ class BodyTagUtil {
     var myElement = document.body!.children
         .where((element) => element.localName == myTag)
         .where((element) => element.children.every((e) =>
-            checkTagType(e.localName, e.text.toString()).changeToHtml() !=
-            parentTag.changeToHtml()))
+    checkTagType(e.localName, e.text.toString()).changeToHtml() !=
+        parentTag.changeToHtml()))
         .toList();
     if (myElement.isEmpty) return child;
     myElement.first.insertAdjacentHtml('beforeend', parentTag.changeToHtml(),
@@ -56,7 +62,7 @@ class BodyTagUtil {
         .toList()
         .expand((tag) => tag.children)
         .map((child) =>
-            checkTagType(child.localName, child.text.toString()).changeToHtml())
+        checkTagType(child.localName, child.text.toString()).changeToHtml())
         .join();
 
     body.children.removeWhere((element) => element.localName == myTag);

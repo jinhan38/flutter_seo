@@ -1,15 +1,3 @@
-
-## Features
-
-You can use the flutter_seo package to add tags to your html, which you can use to try SEO optimization.
-
-
-## Usage
-
-Follow the example below to add tags.
-to `/example` folder.
-
-```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_seo/flutter_seo.dart';
 
@@ -55,5 +43,3 @@ class MyApp extends StatelessWidget {
     HeadTagUtil.add("name", "keywords", "IT, Flutter");
   }
 }
-
-```
