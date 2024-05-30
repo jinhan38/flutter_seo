@@ -7,3 +7,5 @@ Add Publisher Information
 ## 0.0.3
 Remove hash check logic
 
+## 0.0.4
+Readme edited
