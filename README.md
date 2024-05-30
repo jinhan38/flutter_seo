@@ -24,8 +24,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BodyTagUtil.init();
     addMetaTag();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      BodyTagUtil.init();
+    },);
     return MaterialApp(
       navigatorObservers: [routeObserver],
       title: '',
