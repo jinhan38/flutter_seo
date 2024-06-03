@@ -1,17 +1,61 @@
 abstract class ParentTag {
-  String tag;
   String text;
+  String tag;
 
   ParentTag(this.text, this.tag);
 
   String changeToHtml() {
+    if (this is TagImgWithA) {
+      var tag = this as TagImgWithA;
+      String titleAttribute =
+          tag.title.isNotEmpty ? 'title="${tag.title}"' : '';
+      return '<a href="${tag.href}" $titleAttribute><${tag.tag} src="${tag.url}" alt="${tag.alt}" /></a>';
+    }
+
+    if (this is TagImg) {
+      var tag = this as TagImg;
+      return '<${tag.tag} src="${tag.url}" alt="${tag.alt}" />';
+    }
+
+    if (this is TagTextWithA) {
+      var tag = this as TagTextWithA;
+      String titleAttribute =
+          tag.title.isNotEmpty ? 'title="${tag.title}"' : '';
+      return '<a href="${tag.href}" $titleAttribute><${tag.tag} style="color:black;">$text</${tag.tag}></a>';
+    }
     return '<$tag style="color:black;">$text</$tag>';
   }
 
   @override
   String toString() {
+    if (this is TagImg) {
+      return '<$tag src="$text" alt="${(this as TagImg).alt}" />';
+    }
     return '<$tag style="color:black;">$text</$tag>';
   }
+}
+
+class TagImg extends ParentTag {
+  String alt;
+  String url;
+
+  TagImg(this.url, this.alt) : super('', 'img');
+}
+
+class TagImgWithA extends ParentTag {
+  String alt;
+  String href;
+  String url;
+  String title;
+
+  TagImgWithA(this.url, this.alt, this.href, this.title) : super('', 'img');
+}
+
+class TagTextWithA extends ParentTag {
+  String href;
+  String title;
+
+  TagTextWithA(super.text, super.tag, this.href, this.title);
 }
 
 class TagP extends ParentTag {

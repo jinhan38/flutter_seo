@@ -15,3 +15,6 @@ Add sample site
 
 ## 0.0.6
 Readme edited
+
+## 0.0.7
+add a, img tag
