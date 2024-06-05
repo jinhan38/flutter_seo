@@ -1,3 +1,5 @@
+import 'package:flutter_seo/src/body_tag_util.dart';
+
 abstract class ParentTag {
   String text;
   String tag;
@@ -5,6 +7,12 @@ abstract class ParentTag {
   ParentTag(this.text, this.tag);
 
   String changeToHtml() {
+    if (this is TagHeader) {
+      return (this as TagHeader).childTag.changeToHtml();
+    }
+    if (this is TagFooter) {
+      return (this as TagFooter).childTag.changeToHtml();
+    }
     if (this is TagImgWithA) {
       var tag = this as TagImgWithA;
       String titleAttribute =
@@ -84,4 +92,16 @@ class TagH5 extends ParentTag {
 
 class TagH6 extends ParentTag {
   TagH6(String text) : super(text, 'h6');
+}
+
+class TagHeader extends ParentTag {
+  ParentTag childTag;
+
+  TagHeader(this.childTag) : super('', BodyTagUtil.header);
+}
+
+class TagFooter extends ParentTag {
+  ParentTag childTag;
+
+  TagFooter(this.childTag) : super('', BodyTagUtil.footer);
 }
