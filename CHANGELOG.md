@@ -24,3 +24,6 @@ Add header, footer tag
 
 ## 0.0.9
 Add title tag and custom tag, update meta tags
+
+## 0.1.0
+Add div tag

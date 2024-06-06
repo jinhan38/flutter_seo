@@ -1,11 +1,12 @@
-import 'allow_uri_policy.dart';
 import 'dart:html';
+
+import 'allow_uri_policy.dart';
 
 class HeadTagUtil {
   static final _headValidator = NodeValidatorBuilder()
     ..allowHtml5(uriPolicy: AllowAllUriPolicy())
     ..allowElement("title")
-    ..allowCustomElement('title')
+    ..allowElement("div")
     ..allowCustomElement(
       'meta',
       attributes: [

@@ -19,10 +19,10 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     BodyTagUtil.init();
     addMetaTag();
-    addCustomTag();
     WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
+          (timeStamp) {
         HeadTagUtil.setTitle("flutter_seo title");
+        addCustomTag();
       },
     );
     super.initState();
@@ -100,13 +100,13 @@ class _MyAppState extends State<MyApp> {
       keywords: ["111", "222", "333", "444"],
       description: "Check description",
       imageUrl:
-          "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+      "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
       url: "https://sailing-it.com",
     );
   }
 
   void addCustomTag() {
-    var custom = '''
+    String custom = '''
     <div>
         <p>aaa</p>
         <p>bbb</p>

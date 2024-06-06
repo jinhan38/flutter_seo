@@ -8,7 +8,7 @@ On the site made with the sample below, you can see that meta data is added to t
  https://seo-package-sample.web.app/
 
 
-Available tags : h1, h2, h3, h4, h5, h6, p, img, a, header, footer, title, custom tag
+Available tags : h1, h2, h3, h4, h5, h6, p, img, a, header, footer, title, div, custom tag
 
 
 ## Usage
@@ -38,10 +38,10 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     BodyTagUtil.init();
     addMetaTag();
-    addCustomTag();
     WidgetsBinding.instance.addPostFrameCallback(
           (timeStamp) {
         HeadTagUtil.setTitle("flutter_seo title");
+        addCustomTag();
       },
     );
     super.initState();
@@ -125,7 +125,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void addCustomTag() {
-    var custom = '''
+    String custom = '''
     <div>
         <p>aaa</p>
         <p>bbb</p>
