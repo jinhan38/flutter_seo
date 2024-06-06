@@ -13,6 +13,69 @@ Available tags : h1, h2, h3, h4, h5, h6, p, img, a, header, footer, title, div, 
 
 ## Usage
 
+
+1. Add Observer
+You have to add SeoRouteObserver in navigatorObservers of MaterialApp.
+
+```dart
+
+final RouteObserver<PageRoute<dynamic>> routeObserver = SeoRouteObserver();
+
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    navigatorObservers: [routeObserver],
+  );
+}
+```
+
+
+2. Initialize Seo Tags
+You must call BodyTagUtil.init().  
+Call BodyTagUtil.init() in initState of MyApp Widget.
+ 
+
+3. Add MetaTag
+Add Metatags using HeadTagUtil.
+Note that setTitle must be called after MaterialApp is built to take effect.
+```dart
+void addMetaTag() {
+  WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+      HeadTagUtil.setTitle("flutter_seo title");
+    },
+  );
+  HeadTagUtil.add("name", "keywords", "flutter, web, seo");
+  HeadTagUtil.setHead(
+    title: "Check title",
+    keywords: ["111", "222", "333", "444"],
+    description: "Check description",
+    imageUrl:
+    "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+    url: "https://sailing-it.com",
+  );
+}
+```
+
+
+4. Custom Tag
+```dart
+  void addCustomTag() {
+    String custom = '''
+    <div>
+        <p>aaa</p>
+        <p>bbb</p>
+        <div>
+            <p>ccc</p>
+            <p>ddd</p>
+        </div>
+    </div>''';
+    BodyTagUtil.addTag(TagH1(custom));
+  }
+```
+
+
+
 Follow the example below to add tags.
 to `/example` folder.
 
@@ -61,11 +124,6 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      BodyTagUtil.updates();
-                    },
-                    child: const Text("Body HTML Update ")),
                 const Text("header text h1").seoHeader(TagType.h1),
                 const Text("header text h2").seoHeader(TagType.h2),
                 const Text("Check 1").seoH1,
@@ -76,9 +134,7 @@ class _MyAppState extends State<MyApp> {
                 const Text("Check 6").seoH6,
                 const Text("Check P").seoP,
                 const Text("Check String a tag").seoTextWithA(
-                    "Check String a tag",
-                    TagType.p.name,
-                    "https://sailing-it.com",
+                    "Check String a tag", "https://sailing-it.com",
                     title: "homepage"),
                 SizedBox(
                   width: 200,
@@ -101,7 +157,8 @@ class _MyAppState extends State<MyApp> {
                   ).seoImgWithA(
                       "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
                       "logo image",
-                      "https://sailing-it.com"),
+                      "https://sailing-it.com",
+                      title: "img title"),
                 ),
                 const Text("footer text P").seoFooter(TagType.p),
                 const Text("footer text H2").seoFooter(TagType.h5),

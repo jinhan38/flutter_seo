@@ -27,10 +27,10 @@ class BodyTagUtil {
 
   static void init() {
     if (document.body == null) return;
-    var isEmpty = document.body!.children
-        .where((element) => element.localName == mainTag)
-        .isEmpty;
-    if (!isEmpty) clear();
+    // var isEmpty = document.body!.children
+    //     .where((element) => element.localName == mainTag)
+    //     .isEmpty;
+    clear();
     document.body?.insertAdjacentHtml(
       'afterBegin',
       '<$footer></$footer>',
@@ -63,12 +63,42 @@ class BodyTagUtil {
     if (parentTag is TagFooter) {
       checkTag = footer;
     }
+
     var myElement = document.body!.children
         .where((element) => element.localName == checkTag)
-        .where((element) => element.children.every((e) =>
-            checkTagType(e.localName, e.text.toString()).changeToHtml() !=
-            parentTag.changeToHtml()))
-        .toList();
+        .where((element) {
+      return element.children.every((e) {
+        var tag = checkTagType(e.localName, e.text.toString());
+        if (tag != null) {
+          return tag.changeToHtml() != parentTag.changeToHtml();
+        }
+        if (e.localName == TagType.a.name) {
+          ParentTag made;
+          if (parentTag is TagTextWithA) {
+            made = TagTextWithA(
+              e.text.toString(),
+              e.attributes["href"] ?? "",
+              e.attributes["title"] ?? "",
+            );
+          } else {
+            made = TagImgWithA(
+              e.children.first.attributes["src"] ?? "",
+              e.children.first.attributes["alt"] ?? "",
+              e.attributes["href"] ?? "",
+              e.attributes["title"] ?? "",
+            );
+          }
+          return made.changeToHtml() != parentTag.changeToHtml();
+        } else if (e.localName == TagType.img.name) {
+          var madeImg = TagImg(
+            e.attributes["src"] ?? "",
+            e.attributes["alt"] ?? "",
+          );
+          return madeImg.changeToHtml() != parentTag.changeToHtml();
+        }
+        return true;
+      });
+    }).toList();
 
     if (myElement.isEmpty) return child;
     myElement.first.insertAdjacentHtml('beforeend', parentTag.changeToHtml(),
@@ -84,43 +114,49 @@ class BodyTagUtil {
     if (parentTag is TagFooter) {
       checkTag = footer;
     }
+
     var myElement = document.body!.children
         .where((element) => element.localName == checkTag)
-        .where((element) => element.children.every((e) =>
-            checkTagType(e.localName, e.text.toString()).changeToHtml() !=
-            parentTag.changeToHtml()))
-        .toList();
+        .where((element) {
+      return element.children.every((e) {
+        var tag = checkTagType(e.localName, e.text.toString());
+        if (tag != null) {
+          return tag.changeToHtml() != parentTag.changeToHtml();
+        }
+        if (e.localName == TagType.a.name) {
+          ParentTag made;
+          if (parentTag is TagTextWithA) {
+            made = TagTextWithA(
+              e.text.toString(),
+              e.attributes["href"] ?? "",
+              e.attributes["title"] ?? "",
+            );
+          } else {
+            made = TagImgWithA(
+              e.children.first.attributes["src"] ?? "",
+              e.children.first.attributes["alt"] ?? "",
+              e.attributes["href"] ?? "",
+              e.attributes["title"] ?? "",
+            );
+          }
+          return made.changeToHtml() != parentTag.changeToHtml();
+        } else if (e.localName == TagType.img.name) {
+          var madeImg = TagImg(
+            e.attributes["src"] ?? "",
+            e.attributes["alt"] ?? "",
+          );
+          return madeImg.changeToHtml() != parentTag.changeToHtml();
+        }
+        return true;
+      });
+    }).toList();
 
+    if (myElement.isEmpty) return;
     myElement.first.insertAdjacentHtml('beforeend', parentTag.changeToHtml(),
         validator: _bodyValidator);
   }
 
-  static void updates() {
-    _update(footer);
-    _update(mainTag);
-    _update(header);
-  }
-
-  static void _update(String tag) {
-    var body = document.body!;
-    String mainTagList = body.children
-        .where((element) => element.localName == tag)
-        .toList()
-        .expand((tag) => tag.children)
-        .map((child) =>
-            checkTagType(child.localName, child.text.toString()).changeToHtml())
-        .join();
-
-    body.children.removeWhere((element) => element.localName == tag);
-
-    body.insertAdjacentHtml(
-      'afterBegin',
-      '<$tag>$mainTagList</$tag>',
-      validator: _bodyValidator,
-    );
-  }
-
-  static ParentTag checkTagType(String localName, String text) {
+  static ParentTag? checkTagType(String localName, String text) {
     switch (localName) {
       case 'p':
         return TagP(text);
@@ -137,7 +173,7 @@ class BodyTagUtil {
       case 'h6':
         return TagH6(text);
     }
-    return TagP(text);
+    return null;
   }
 }
 
@@ -213,9 +249,8 @@ extension FlutterSeo on Widget {
 
   Widget seoTextWithA(
     String text,
-    String tag,
     String href, {
     String title = "",
   }) =>
-      BodyTagUtil.add(this, TagTextWithA(text, tag, href, title));
+      BodyTagUtil.add(this, TagTextWithA(text, href, title));
 }

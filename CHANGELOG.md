@@ -27,3 +27,6 @@ Add title tag and custom tag, update meta tags
 
 ## 0.1.0
 Add div tag
+
+## 0.1.1
+A tag error was fixed. the READMED modified.

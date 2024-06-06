@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     BodyTagUtil.init();
     addMetaTag();
     WidgetsBinding.instance.addPostFrameCallback(
-          (timeStamp) {
+      (timeStamp) {
         HeadTagUtil.setTitle("flutter_seo title");
         addCustomTag();
       },
@@ -42,11 +42,6 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      BodyTagUtil.updates();
-                    },
-                    child: const Text("Body HTML Update ")),
                 const Text("header text h1").seoHeader(TagType.h1),
                 const Text("header text h2").seoHeader(TagType.h2),
                 const Text("Check 1").seoH1,
@@ -57,9 +52,7 @@ class _MyAppState extends State<MyApp> {
                 const Text("Check 6").seoH6,
                 const Text("Check P").seoP,
                 const Text("Check String a tag").seoTextWithA(
-                    "Check String a tag",
-                    TagType.p.name,
-                    "https://sailing-it.com",
+                    "Check String a tag", "https://sailing-it.com",
                     title: "homepage"),
                 SizedBox(
                   width: 200,
@@ -82,7 +75,8 @@ class _MyAppState extends State<MyApp> {
                   ).seoImgWithA(
                       "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
                       "logo image",
-                      "https://sailing-it.com"),
+                      "https://sailing-it.com",
+                      title: "img title"),
                 ),
                 const Text("footer text P").seoFooter(TagType.p),
                 const Text("footer text H2").seoFooter(TagType.h5),
@@ -100,7 +94,7 @@ class _MyAppState extends State<MyApp> {
       keywords: ["111", "222", "333", "444"],
       description: "Check description",
       imageUrl:
-      "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+          "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
       url: "https://sailing-it.com",
     );
   }

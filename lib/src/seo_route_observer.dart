@@ -6,7 +6,6 @@ class SeoRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 
   bool first = true;
 
-
   void _sendScreenView(PageRoute<dynamic> route) {
     if (first) {
       first = false;
