@@ -12,8 +12,7 @@ Available tags : h1, h2, h3, h4, h5, h6, p, img, a, header, footer, title, div, 
 
 ## Usage
 
-1. Add Observer
-   You have to add SeoRouteObserver in navigatorObservers of MaterialApp.
+1. Add Observer. You have to add SeoRouteObserver in navigatorObservers of MaterialApp.
 
 ```dart
 
@@ -27,8 +26,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-2. Initialize Seo Tags
-   You must call BodyTagUtil.init().
+2. You must call BodyTagUtil.init().
 
 ```dart
 @override
@@ -38,9 +36,7 @@ void initState() {
 }
 ```
 
-3. Add MetaTag
-   Add Metatags using HeadTagUtil.
-   Note that setTitle must be called after MaterialApp is built to take effect.
+3. Add Metatags using HeadTagUtil. Note that setTitle must be called after MaterialApp is built to take effect.
 
 ```dart
 void addMetaTag() {
@@ -64,7 +60,7 @@ void addMetaTag() {
 4. Custom Tag
 
 ```dart
-  void addCustomTag() {
+void addCustomTag() {
   String custom = '''
     <div>
         <p>aaa</p>
