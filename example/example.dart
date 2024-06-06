@@ -2,21 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_seo/flutter_seo.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final RouteObserver<PageRoute<dynamic>> routeObserver = SeoRouteObserver();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     BodyTagUtil.init();
     addMetaTag();
+    addCustomTag();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        HeadTagUtil.setTitle("flutter_seo title");
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       navigatorObservers: [routeObserver],
-      title: '',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -80,7 +95,26 @@ class MyApp extends StatelessWidget {
   }
 
   void addMetaTag() {
-    HeadTagUtil.add("name", "theme-color", "#FFFFFF");
-    HeadTagUtil.add("name", "keywords", "IT, Flutter");
+    HeadTagUtil.setHead(
+      title: "Check title",
+      keywords: ["111", "222", "333", "444"],
+      description: "Check description",
+      imageUrl:
+          "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+      url: "https://sailing-it.com",
+    );
+  }
+
+  void addCustomTag() {
+    var custom = '''
+    <div>
+        <p>aaa</p>
+        <p>bbb</p>
+        <div>
+            <p>ccc</p>
+            <p>ddd</p>
+        </div>
+    </div>''';
+    BodyTagUtil.addTag(TagH1(custom));
   }
 }

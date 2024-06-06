@@ -76,6 +76,25 @@ class BodyTagUtil {
     return child;
   }
 
+  static void addTag(ParentTag parentTag) {
+    String checkTag = mainTag;
+    if (parentTag is TagHeader) {
+      checkTag = header;
+    }
+    if (parentTag is TagFooter) {
+      checkTag = footer;
+    }
+    var myElement = document.body!.children
+        .where((element) => element.localName == checkTag)
+        .where((element) => element.children.every((e) =>
+            checkTagType(e.localName, e.text.toString()).changeToHtml() !=
+            parentTag.changeToHtml()))
+        .toList();
+
+    myElement.first.insertAdjacentHtml('beforeend', parentTag.changeToHtml(),
+        validator: _bodyValidator);
+  }
+
   static void updates() {
     _update(footer);
     _update(mainTag);
