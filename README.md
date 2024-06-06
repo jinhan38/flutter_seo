@@ -1,21 +1,19 @@
-
 ## Features
 
-You can use the flutter_seo package to add tags to your html, which you can use to try SEO optimization.
+You can use the flutter_seo package to add tags to your html, which you can use to try SEO
+optimization.
 
-On the site made with the sample below, you can see that meta data is added to the head and html tag is created on the body.
+On the site made with the sample below, you can see that meta data is added to the head and html tag
+is created on the body.
 
- https://seo-package-sample.web.app/
-
+https://seo-package-sample.web.app/
 
 Available tags : h1, h2, h3, h4, h5, h6, p, img, a, header, footer, title, div, custom tag
 
-
 ## Usage
 
-
 1. Add Observer
-You have to add SeoRouteObserver in navigatorObservers of MaterialApp.
+   You have to add SeoRouteObserver in navigatorObservers of MaterialApp.
 
 ```dart
 
@@ -29,15 +27,21 @@ Widget build(BuildContext context) {
 }
 ```
 
-
 2. Initialize Seo Tags
-You must call BodyTagUtil.init().  
-Call BodyTagUtil.init() in initState of MyApp Widget.
- 
+   You must call BodyTagUtil.init().
+
+```dart
+@override
+void initState() {
+  BodyTagUtil.init();
+  super.initState();
+}
+```
 
 3. Add MetaTag
-Add Metatags using HeadTagUtil.
-Note that setTitle must be called after MaterialApp is built to take effect.
+   Add Metatags using HeadTagUtil.
+   Note that setTitle must be called after MaterialApp is built to take effect.
+
 ```dart
 void addMetaTag() {
   WidgetsBinding.instance.addPostFrameCallback(
@@ -57,11 +61,11 @@ void addMetaTag() {
 }
 ```
 
-
 4. Custom Tag
+
 ```dart
   void addCustomTag() {
-    String custom = '''
+  String custom = '''
     <div>
         <p>aaa</p>
         <p>bbb</p>
@@ -70,11 +74,11 @@ void addMetaTag() {
             <p>ddd</p>
         </div>
     </div>''';
-    BodyTagUtil.addTag(TagH1(custom));
-  }
+  BodyTagUtil.addTag(TagH1(custom));
+}
 ```
 
-
+## Example
 
 Follow the example below to add tags.
 to `/example` folder.
