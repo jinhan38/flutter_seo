@@ -111,9 +111,20 @@ class _MyAppState extends State<MyApp> {
                     for (var w in htmlWidgets) {
                       depthSet.add(w.depth);
                     }
-
                     print('dl : ${depthSet.length}');
                     var dynamicList = createDynamicList(depthSet.length);
+                    List<int> depthCount = depthSet.toList();
+                    depthCount.sort();
+                    for (var w in htmlWidgets) {
+                      int flag = 0;
+                      for (var d in depthCount) {
+                        if(d == w.depth) {
+                          // dynamicList[flag]
+                        }
+                        flag++;
+                      }
+                    }
+
                     print("dynamicList : $dynamicList"); // 출력: [[]]
                     eList.add(ElementModel(0, html.DivElement()));
                     for (var w in htmlWidgets) {
