@@ -1,3 +1,4 @@
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_seo/flutter_seo.dart';
 
@@ -15,6 +16,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final RouteObserver<PageRoute<dynamic>> routeObserver = SeoRouteObserver();
 
+  List<HtmlModel> htmlWidgets = [];
+
   @override
   void initState() {
     BodyTagUtil.init();
@@ -23,10 +26,17 @@ class _MyAppState extends State<MyApp> {
       (timeStamp) {
         HeadTagUtil.setTitle("flutter_seo title");
         addCustomTag();
+        Future.delayed(const Duration(milliseconds: 300), () {
+          htmlWidgets.clear();
+          final element = _key.currentContext as Element;
+          printWidgetTree(element);
+        });
       },
     );
     super.initState();
   }
+
+  final GlobalKey _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +47,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       home: Scaffold(
+        key: _key,
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -44,12 +55,24 @@ class _MyAppState extends State<MyApp> {
               children: [
                 const Text("header text h1").seoHeader(TagType.h1),
                 const Text("header text h2").seoHeader(TagType.h2),
-                const Text("Check 1").seoH1,
-                const Text("Check 2").seoH2,
-                const Text("Check 3").seoH3,
-                const Text("Check 4").seoH4,
-                const Text("Check 5").seoH5,
-                const Text("Check 6").seoH6,
+                Column(
+                  children: [
+                    const Text("Check 1").seoH1,
+                    const Text("Check 2").seoH2,
+                  ],
+                ),
+                Column(
+                  children: [
+                    const Text("Check 3").seoH3,
+                    const Text("Check 4").seoH4,
+                  ],
+                ),
+                Column(
+                  children: [
+                    const Text("Check 5").seoH5,
+                    const Text("Check 6").seoH6,
+                  ],
+                ),
                 const Text("Check P").seoP,
                 const Text("Check String a tag").seoTextWithA(
                     "Check String a tag", "https://sailing-it.com",
@@ -80,12 +103,61 @@ class _MyAppState extends State<MyApp> {
                 ),
                 const Text("footer text P").seoFooter(TagType.p),
                 const Text("footer text H2").seoFooter(TagType.h5),
+                ElevatedButton(
+                  onPressed: () {
+                    print(htmlWidgets);
+                    List<ElementModel> eList = [];
+                    Set<int> depthSet = {};
+                    for (var w in htmlWidgets) {
+                      depthSet.add(w.depth);
+                    }
+
+                    print('dl : ${depthSet.length}');
+                    var dynamicList = createDynamicList(depthSet.length);
+                    print("dynamicList : $dynamicList"); // 출력: [[]]
+                    eList.add(ElementModel(0, html.DivElement()));
+                    for (var w in htmlWidgets) {
+                      if (w.widget is Text || w.widget is Image) {
+                        for (var e in eList) {
+                          if (e.depth == (w.depth - 1)) {
+                            if (w.widget is Text) {
+                              e.element.append(
+                                  _createParagraph((w.widget as Text).data!));
+                            } else if (w.widget is Image) {
+                              // (w.widget as Image).
+                            }
+                          }
+                        }
+                      } else {
+                        if(eList.length == 1) {
+                          eList.first.element.append( html.DivElement());
+                        }
+                        eList.add(ElementModel(w.depth, html.DivElement()));
+                      }
+                    }
+                    for (var e in eList) {
+                      print('e : ${e.element}');
+                      print('e children : ${e.element.children}');
+                      html.document.body!.append(e.element);
+                    }
+                    print(eList);
+                  },
+                  child: Text("eeeeeee"),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  dynamic createDynamicList(int depth) {
+    if (depth <= 0) {
+      return <String>[];
+    } else {
+      return [createDynamicList(depth - 1)];
+    }
   }
 
   void addMetaTag() {
@@ -110,5 +182,60 @@ class _MyAppState extends State<MyApp> {
         </div>
     </div>''';
     BodyTagUtil.addTag(TagH1(custom));
+  }
+
+  void printWidgetTree(Element element, [int depth = 0]) {
+    final indent = ' ' * depth;
+    if (element.widget is Scaffold ||
+        element.widget is Row ||
+        element.widget is Column ||
+        element.widget is SingleChildScrollView ||
+        element.widget is Container ||
+        element.widget is SizedBox ||
+        element.widget is Image ||
+        element.widget is ButtonStyleButton ||
+        element.widget is Text) {
+      htmlWidgets.add(HtmlModel(depth, element.widget));
+    }
+    // debugPrint('$indent${element.widget}');
+    // if(element.widget is Text) {
+    //   print('text 위젯 : ${(element.widget as Text).data}');
+    // }
+    element.visitChildren((child) {
+      printWidgetTree(child, depth + 1);
+    });
+  }
+
+  // 텍스트를 p 태그로 변환하는 헬퍼 메서드
+  html.ParagraphElement _createParagraph(String text) {
+    final p = html.ParagraphElement();
+    p.text = text;
+    // p.style.fontSize = "${fontSize}em";
+    // p.style.margin = "0";
+    return p;
+  }
+}
+
+class HtmlModel {
+  int depth;
+  Widget widget;
+
+  HtmlModel(this.depth, this.widget);
+
+  @override
+  String toString() {
+    return 'HtmlModel{depth: $depth, widget: $widget}';
+  }
+}
+
+class ElementModel {
+  int depth;
+  html.Element element;
+
+  ElementModel(this.depth, this.element);
+
+  @override
+  String toString() {
+    return '\nElementModel{depth: $depth, element: $element}';
   }
 }
