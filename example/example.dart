@@ -1,6 +1,7 @@
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_seo/flutter_seo.dart';
+import 'package:flutter_seo/src/create_html.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -16,8 +17,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final RouteObserver<PageRoute<dynamic>> routeObserver = SeoRouteObserver();
 
-  List<HtmlModel> htmlWidgets = [];
-
   @override
   void initState() {
     BodyTagUtil.init();
@@ -26,17 +25,11 @@ class _MyAppState extends State<MyApp> {
       (timeStamp) {
         HeadTagUtil.setTitle("flutter_seo title");
         addCustomTag();
-        Future.delayed(const Duration(milliseconds: 300), () {
-          htmlWidgets.clear();
-          final element = _key.currentContext as Element;
-          printWidgetTree(element);
-        });
+        CreateHtml.makeWidgetTree(context);
       },
     );
     super.initState();
   }
-
-  final GlobalKey _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -47,113 +40,132 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       home: Scaffold(
-        key: _key,
         body: Center(
           child: SingleChildScrollView(
             child: Column(
+              key: SeoKey(TagType.div, className: "colum class"),
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text("header text h1").seoHeader(TagType.h1),
-                const Text("header text h2").seoHeader(TagType.h2),
+                Text(
+                  "header text h1",
+                  key: SeoKey(
+                    TagType.h1,
+                    text: "header text h1",
+                  ),
+                ),
+                Text(
+                  "header text h2",
+                  key: SeoKey(
+                    TagType.h2,
+                    text: "header text h2",
+                  ),
+                ),
                 Column(
+                  key: SeoKey(TagType.div),
                   children: [
-                    const Text("Check 1").seoH1,
-                    const Text("Check 2").seoH2,
+                    Text(
+                      "Check 1",
+                      key: SeoKey(TagType.p),
+                    ),
+                    Text(
+                      "Check 2",
+                      key: SeoKey(TagType.p),
+                    ),
                   ],
                 ),
                 Column(
+                  key: SeoKey(TagType.div),
                   children: [
-                    const Text("Check 3").seoH3,
-                    const Text("Check 4").seoH4,
+                    Text(
+                      "Check 3",
+                      key: SeoKey(TagType.p),
+                    ),
+                    Row(
+                      key: SeoKey(TagType.div),
+                      children: [
+                        Text(
+                          "Check 4",
+                          key: SeoKey(TagType.p),
+                        ),
+                        Text(
+                          "Check 8",
+                          key: SeoKey(TagType.p),
+                        ),
+                        SizedBox(
+                          key: SeoKey(TagType.div),
+                          child: Stack(
+                            key: SeoKey(TagType.div),
+                            children: [
+                              Text(
+                                "Check 9",
+                                key: SeoKey(TagType.p),
+                              ),
+                              Text(
+                                "Check 10",
+                                key: SeoKey(TagType.p),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
                 Column(
+                  key: SeoKey(TagType.div),
                   children: [
-                    const Text("Check 5").seoH5,
-                    const Text("Check 6").seoH6,
+                    Text(
+                      "Check 5",
+                      key: SeoKey(TagType.p),
+                    ),
+                    Text(
+                      "Check 6",
+                      key: SeoKey(TagType.p),
+                    ),
                   ],
                 ),
-                const Text("Check P").seoP,
-                const Text("Check String a tag").seoTextWithA(
-                    "Check String a tag", "https://sailing-it.com",
-                    title: "homepage"),
+                Text(
+                  "Check P",
+                  key: SeoKey(TagType.p),
+                ),
+                Container(
+                  key: SeoKey(TagType.a, src: "a 태그 확인"),
+                  child: Text(
+                    "Check String a tag",
+                    key: SeoKey(TagType.p),
+                  ),
+                ),
                 SizedBox(
+                  key: SeoKey(TagType.a, src: "assets/company_device.png"),
                   width: 200,
                   height: 200,
                   child: Image.asset(
+                    key: SeoKey(
+                      TagType.img,
+                      src: "assets/company_device.png",
+                      alt: "로컬 이미지",
+                    ),
                     "assets/company_device.png",
                     fit: BoxFit.cover,
-                  ).seoImg(
-                    "assets/company_device.png",
-                    "our company device logo image",
                   ),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
+                  key: SeoKey(
+                    TagType.a,
+                    src:
+                        "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+                  ),
                   width: 200,
                   height: 200,
                   child: Image.network(
+                    key: SeoKey(TagType.img,
+                        src:
+                            "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+                        alt: "네트워크 이미지"),
                     "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
                     fit: BoxFit.cover,
-                  ).seoImgWithA(
-                      "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
-                      "logo image",
-                      "https://sailing-it.com",
-                      title: "img title"),
-                ),
-                const Text("footer text P").seoFooter(TagType.p),
-                const Text("footer text H2").seoFooter(TagType.h5),
-                ElevatedButton(
-                  onPressed: () {
-                    print(htmlWidgets);
-                    List<ElementModel> eList = [];
-                    Set<int> depthSet = {};
-                    for (var w in htmlWidgets) {
-                      depthSet.add(w.depth);
-                    }
-                    print('dl : ${depthSet.length}');
-                    var dynamicList = createDynamicList(depthSet.length);
-                    List<int> depthCount = depthSet.toList();
-                    depthCount.sort();
-                    for (var w in htmlWidgets) {
-                      int flag = 0;
-                      for (var d in depthCount) {
-                        if(d == w.depth) {
-                          // dynamicList[flag]
-                        }
-                        flag++;
-                      }
-                    }
-
-                    print("dynamicList : $dynamicList"); // 출력: [[]]
-                    eList.add(ElementModel(0, html.DivElement()));
-                    for (var w in htmlWidgets) {
-                      if (w.widget is Text || w.widget is Image) {
-                        for (var e in eList) {
-                          if (e.depth == (w.depth - 1)) {
-                            if (w.widget is Text) {
-                              e.element.append(
-                                  _createParagraph((w.widget as Text).data!));
-                            } else if (w.widget is Image) {
-                              // (w.widget as Image).
-                            }
-                          }
-                        }
-                      } else {
-                        if(eList.length == 1) {
-                          eList.first.element.append( html.DivElement());
-                        }
-                        eList.add(ElementModel(w.depth, html.DivElement()));
-                      }
-                    }
-                    for (var e in eList) {
-                      print('e : ${e.element}');
-                      print('e children : ${e.element.children}');
-                      html.document.body!.append(e.element);
-                    }
-                    print(eList);
-                  },
-                  child: Text("eeeeeee"),
+                  ),
                 ),
               ],
             ),
@@ -163,12 +175,37 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  dynamic createDynamicList(int depth) {
-    if (depth <= 0) {
-      return <String>[];
-    } else {
-      return [createDynamicList(depth - 1)];
+  void createHtml(List<ElementModel> elements) {
+    if (elements.isEmpty) return;
+
+    // 루트 요소 초기화
+    html.Element root = elements[0].element;
+    Map<int, html.Element> depthMap = {elements[0].depth: root};
+
+    for (var i = 1; i < elements.length; i++) {
+      var currentElement = elements[i];
+      var currentDepth = currentElement.depth;
+
+      // 가장 가까운 부모 요소 찾기
+      html.Element? parent;
+      for (var depth = currentDepth - 1; depth >= 0; depth--) {
+        if (depthMap.containsKey(depth)) {
+          parent = depthMap[depth];
+          break;
+        }
+      }
+
+      if (parent != null) {
+        // 현재 요소를 부모 요소에 추가
+        parent.append(currentElement.element);
+
+        // 현재 요소를 depthMap에 추가
+        depthMap[currentDepth] = currentElement.element;
+      }
     }
+
+    // 루트 요소를 body에 추가
+    html.document.body!.append(root);
   }
 
   void addMetaTag() {
@@ -193,37 +230,6 @@ class _MyAppState extends State<MyApp> {
         </div>
     </div>''';
     BodyTagUtil.addTag(TagH1(custom));
-  }
-
-  void printWidgetTree(Element element, [int depth = 0]) {
-    final indent = ' ' * depth;
-    if (element.widget is Scaffold ||
-        element.widget is Row ||
-        element.widget is Column ||
-        element.widget is SingleChildScrollView ||
-        element.widget is Container ||
-        element.widget is SizedBox ||
-        element.widget is Image ||
-        element.widget is ButtonStyleButton ||
-        element.widget is Text) {
-      htmlWidgets.add(HtmlModel(depth, element.widget));
-    }
-    // debugPrint('$indent${element.widget}');
-    // if(element.widget is Text) {
-    //   print('text 위젯 : ${(element.widget as Text).data}');
-    // }
-    element.visitChildren((child) {
-      printWidgetTree(child, depth + 1);
-    });
-  }
-
-  // 텍스트를 p 태그로 변환하는 헬퍼 메서드
-  html.ParagraphElement _createParagraph(String text) {
-    final p = html.ParagraphElement();
-    p.text = text;
-    // p.style.fontSize = "${fontSize}em";
-    // p.style.margin = "0";
-    return p;
   }
 }
 

@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class BodyTagUtil {
     ..allowHtml5(uriPolicy: AllowAllUriPolicy())
     ..allowCustomElement(mainTag)
     ..allowCustomElement(header)
+    ..allowCustomElement('div', attributes: ['style'])
     ..allowCustomElement('h1', attributes: ['style'])
     ..allowCustomElement('h2', attributes: ['style'])
     ..allowCustomElement('h3', attributes: ['style'])
@@ -177,7 +179,7 @@ class BodyTagUtil {
   }
 }
 
-enum TagType { p, h1, h2, h3, h4, h5, h6, a, img, footer }
+enum TagType { div, p, h1, h2, h3, h4, h5, h6, a, img, footer }
 
 extension FlutteSeo on Text {
   Text get seoP => BodyTagUtil.add(this, TagP(data!)) as Text;
@@ -254,3 +256,5 @@ extension FlutterSeo on Widget {
   }) =>
       BodyTagUtil.add(this, TagTextWithA(text, href, title));
 }
+
+final Random random = Random();
