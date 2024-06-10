@@ -1,6 +1,10 @@
 library flutter_seo;
 
-export 'src/body_tag_list.dart';
-export 'src/body_tag_util.dart';
-export 'src/head_tag_util.dart';
-export 'src/seo_route_observer.dart';
+export 'util/body_tag_util.dart';
+export 'util/head_tag_util.dart';
+export 'observer/seo_route_observer.dart';
+export 'model/element_model.dart';
+export 'model/html_model.dart';
+export 'create_html.dart';
+export 'key/seo_key.dart';
+export 'enum/tag_type.dart';

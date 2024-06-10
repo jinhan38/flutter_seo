@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'body_tag_util.dart';
+import '../util/body_tag_util.dart';
 
 class SeoRouteObserver extends RouteObserver<PageRoute<dynamic>> {
 

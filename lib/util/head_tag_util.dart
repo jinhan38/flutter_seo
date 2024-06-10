@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'allow_uri_policy.dart';
+import '../uri_policy/allow_uri_policy.dart';
 
 class HeadTagUtil {
   static final _headValidator = NodeValidatorBuilder()
