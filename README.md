@@ -10,13 +10,15 @@ https://seo-package-sample.web.app/
 
 
 ## Usage
+              
+<br>
 
 1. Add Head Tag  
 
 If you want to add a description tag, please refer to below.  
 
-- <meta name="description" content="Add description">  
-- <meta name="description" content="Add description">
+<meta name="description" content="Add description">  
+<meta name="description" content="Add description">
 
 ```dart
   @override
@@ -30,13 +32,15 @@ void initState() {
   super.initState();
 }
 ```
-        
+
+<br>        
 
 2. Add head Title
 
 > HeadTagUtil.setTitle("titleName");
 
 
+<br>   
 3. If you want to add several pre-defined tags, follow along 
 
 ```dart
@@ -57,8 +61,8 @@ void addMetaTag() {
   );
 }
 ```
-              
 
+<br>   
 4. Add body tag
 
 In order to add body tags, you must add the desired SeoKey to the widget.
@@ -107,9 +111,9 @@ class _SecondScreenState extends State<SecondScreen> {
 }
 
 ```
-                       
 
 
+<br>   
 5. Use Navigator's then to draw html again after pop.
 
 ```dart
