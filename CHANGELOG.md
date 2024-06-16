@@ -33,3 +33,6 @@ A tag error was fixed. the READMED modified.
 
 ## 1.0.0
 Change how tags are created.
+
+## 1.1.0
+Change how tags are created.

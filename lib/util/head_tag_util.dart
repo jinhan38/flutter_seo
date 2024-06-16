@@ -38,6 +38,14 @@ class HeadTagUtil {
     );
   }
 
+  static void removeByValue(String value) {
+    final head = document.head;
+    if (head == null) return;
+    head.children.removeWhere(
+      (element) => element.attributes.containsValue(value),
+    );
+  }
+
   static void setHead({
     String title = "",
     String description = "",
@@ -47,38 +55,37 @@ class HeadTagUtil {
     String themeColor = "#FFFFFF",
   }) {
     if (themeColor.isNotEmpty) {
-      HeadTagUtil.add("name", "theme-color", themeColor);
+      add("name", "theme-color", themeColor);
     }
     if (keywords.isNotEmpty) {
-      HeadTagUtil.add("name", "keywords", keywords.join(", "));
+      add("name", "keywords", keywords.join(", "));
     }
 
     if (title.isNotEmpty) {
-      HeadTagUtil.add("property", "og:title", title);
-      HeadTagUtil.add("name", "twitter:title", title);
-      HeadTagUtil.add("name", "apple-mobile-web-app-title", title);
+      add("property", "og:title", title);
+      add("name", "twitter:title", title);
+      add("name", "apple-mobile-web-app-title", title);
     }
 
     if (imageUrl.isNotEmpty) {
-      HeadTagUtil.add("property", "og:image", imageUrl);
-      HeadTagUtil.add("name", "twitter:card", imageUrl);
-      HeadTagUtil.add("name", "twitter:image", imageUrl);
+      add("property", "og:image", imageUrl);
+      add("name", "twitter:card", imageUrl);
+      add("name", "twitter:image", imageUrl);
     }
 
     if (url.isNotEmpty) {
-      HeadTagUtil.add("property", "og:url", url);
+      add("property", "og:url", url);
     }
 
     if (description.isNotEmpty) {
-      HeadTagUtil.add("name", "twitter:description", description);
-      HeadTagUtil.add("property", "og:description", description);
-      HeadTagUtil.add("name", "description", description);
+      add("name", "twitter:description", description);
+      add("property", "og:description", description);
+      add("name", "description", description);
     }
 
-    HeadTagUtil.add("name", "apple-mobile-web-app-capable", "yes");
-    HeadTagUtil.add("name", "apple-mobile-web-app-status-bar-style", "black");
-    HeadTagUtil.add(
-        "name", "viewport", "width=device-width, initial-scale=1.0");
-    HeadTagUtil.add("name", "robots", "index, follow");
+    add("name", "apple-mobile-web-app-capable", "yes");
+    add("name", "apple-mobile-web-app-status-bar-style", "black");
+    add("name", "viewport", "width=device-width, initial-scale=1.0");
+    add("name", "robots", "index, follow");
   }
 }

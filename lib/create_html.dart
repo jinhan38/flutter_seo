@@ -8,10 +8,10 @@ class CreateHtml {
   static final List<HtmlModel> _htmlWidgets = [];
 
   static void makeWidgetTree(BuildContext context) {
+    BodyTagUtil.init();
     _htmlWidgets.clear();
     final element = context as Element;
     _setWidgetTree(element);
-
     List<ElementModel> elementList = _htmlWidgets
         .map((e) => ElementModel(e.depth, _setElement(e.widget)))
         .toList();
@@ -20,14 +20,15 @@ class CreateHtml {
   }
 
   static void _setWidgetTree(Element element, [int depth = 0]) {
+    int localDepth = depth;
     if (element.widget.key is SeoKey) {
       _htmlWidgets.add(HtmlModel(depth, element.widget));
+      localDepth++;
     }
-    element.visitChildren((child) => _setWidgetTree(child, depth + 1));
+    element.visitChildren((child) => _setWidgetTree(child, localDepth));
   }
 
   static void _createHtml(List<ElementModel> elements) {
-    _htmlWidgets.clear();
     if (elements.isEmpty) return;
 
     html.Element root = elements[0].element;
@@ -40,6 +41,14 @@ class CreateHtml {
       html.Element? parent;
       for (var depth = currentDepth - 1; depth >= 0; depth--) {
         if (depthMap.containsKey(depth)) {
+          if (depthMap[depth]?.localName == "h1") continue;
+          if (depthMap[depth]?.localName == "h2") continue;
+          if (depthMap[depth]?.localName == "h3") continue;
+          if (depthMap[depth]?.localName == "h4") continue;
+          if (depthMap[depth]?.localName == "h5") continue;
+          if (depthMap[depth]?.localName == "h6") continue;
+          if (depthMap[depth]?.localName == "p") continue;
+          if (depthMap[depth]?.localName == "img") continue;
           parent = depthMap[depth];
           break;
         }
@@ -110,8 +119,7 @@ class CreateHtml {
       } else if (key.tagType == TagType.ul) {
         element = _createElement(TagType.ul.name)..attributes = key.attributes;
       } else if (key.tagType == TagType.li) {
-        var attr = key.attributes;
-        element = _createElement(TagType.li.name)..attributes = attr;
+        element = _createElement(TagType.li.name)..attributes = key.attributes;
       }
       if (key.className.isNotEmpty) {
         element.className = key.className;

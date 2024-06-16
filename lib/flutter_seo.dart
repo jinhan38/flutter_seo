@@ -2,7 +2,6 @@ library flutter_seo;
 
 export 'util/body_tag_util.dart';
 export 'util/head_tag_util.dart';
-export 'observer/seo_route_observer.dart';
 export 'model/element_model.dart';
 export 'model/html_model.dart';
 export 'create_html.dart';

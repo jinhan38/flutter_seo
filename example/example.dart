@@ -13,19 +13,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final RouteObserver<PageRoute<dynamic>> routeObserver = SeoRouteObserver();
-
-  @override
-  void initState() {
-    BodyTagUtil.init();
-    addMetaTag();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorObservers: [routeObserver],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -229,6 +219,7 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: SeoKey(TagType.div),
       appBar: AppBar(
         title: const Text("Second Screen"),
       ),
@@ -239,8 +230,18 @@ class _SecondScreenState extends State<SecondScreen> {
           ),
           Text(
             "second",
-            key: SeoKey(TagType.p),
+            key: SeoKey(TagType.p, text: "second"),
           ),
+          ElevatedButton(
+              onPressed: () {
+                HeadTagUtil.removeByValue("robots");
+              },
+              child: const Text("Remove head")) ,
+          ElevatedButton(
+              onPressed: () {
+                HeadTagUtil.add("name", "description", "Update description");
+              },
+              child: const Text("Change Head")) ,
         ],
       ),
     );
