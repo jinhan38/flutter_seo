@@ -10,9 +10,8 @@ https://seo-package-sample.web.app/
 
 
 ## Usage
-              
+         
 <br>
-
 1. Add Head Tag  
 
 If you want to add a description tag, please refer to below.  
@@ -33,13 +32,14 @@ void initState() {
 }
 ```
 
-<br>        
-
+<br>
+<br>
 2. Add head Title
 
 > HeadTagUtil.setTitle("titleName");
 
 
+<br>   
 <br>   
 3. If you want to add several pre-defined tags, follow along 
 
@@ -62,6 +62,7 @@ void addMetaTag() {
 }
 ```
 
+<br>   
 <br>   
 4. Add body tag
 
@@ -113,6 +114,7 @@ class _SecondScreenState extends State<SecondScreen> {
 ```
 
 
+<br>   
 <br>   
 5. Use Navigator's then to draw html again after pop.
 
