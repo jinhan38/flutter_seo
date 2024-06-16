@@ -3,6 +3,13 @@
 You can use the flutter_seo package to add tags to your html, which you can use to try SEO
 optimization.
 
+<br>
+My web site with flutter_seo package.
+
+https://sailing-it.com/
+
+<br>
+
 On the site made with the sample below, you can see that meta data is added to the head and html tag
 is created on the body.
 
