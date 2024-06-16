@@ -132,6 +132,9 @@ void movePage(BuildContext context, Widget widget, String currentTitle) {
 }
 ```
 
+<br>   
+<br>   
+
 ## Example
 
 Follow the example below to add tags.
