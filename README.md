@@ -8,7 +8,6 @@ is created on the body.
 
 https://seo-package-sample.web.app/
 
-Available tags : h1, h2, h3, h4, h5, h6, p, img, a, header, footer, title, div, custom tag
 
 ## Usage
 
@@ -79,8 +78,7 @@ void addCustomTag() {
 Follow the example below to add tags.
 to `/example` folder.
 
-```dart
-import 'package:flutter/material.dart';
+```dartimport 'package:flutter/material.dart';
 import 'package:flutter_seo/flutter_seo.dart';
 
 void main() async {
@@ -101,12 +99,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     BodyTagUtil.init();
     addMetaTag();
-    WidgetsBinding.instance.addPostFrameCallback(
-          (timeStamp) {
-        HeadTagUtil.setTitle("flutter_seo title");
-        addCustomTag();
-      },
-    );
     super.initState();
   }
 
@@ -118,80 +110,200 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text("header text h1").seoHeader(TagType.h1),
-                const Text("header text h2").seoHeader(TagType.h2),
-                const Text("Check 1").seoH1,
-                const Text("Check 2").seoH2,
-                const Text("Check 3").seoH3,
-                const Text("Check 4").seoH4,
-                const Text("Check 5").seoH5,
-                const Text("Check 6").seoH6,
-                const Text("Check P").seoP,
-                const Text("Check String a tag").seoTextWithA(
-                    "Check String a tag", "https://sailing-it.com",
-                    title: "homepage"),
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Image.asset(
-                    "assets/company_device.png",
-                    fit: BoxFit.cover,
-                  ).seoImg(
-                    "assets/company_device.png",
-                    "our company device logo image",
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Image.network(
-                    "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
-                    fit: BoxFit.cover,
-                  ).seoImgWithA(
-                      "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
-                      "logo image",
-                      "https://sailing-it.com",
-                      title: "img title"),
-                ),
-                const Text("footer text P").seoFooter(TagType.p),
-                const Text("footer text H2").seoFooter(TagType.h5),
-              ],
-            ),
-          ),
-        ),
-      ),
+      home: const FirstScreen(),
     );
   }
 
   void addMetaTag() {
     HeadTagUtil.setHead(
       title: "Check title",
-      keywords: ["111", "222", "333", "444"],
+      keywords: ["flutter_seo", "flutter", "flutter element", "flutter web seo"],
       description: "Check description",
       imageUrl:
-      "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+          "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
       url: "https://sailing-it.com",
     );
   }
+}
 
-  void addCustomTag() {
-    String custom = '''
-    <div>
-        <p>aaa</p>
-        <p>bbb</p>
-        <div>
-            <p>ccc</p>
-            <p>ddd</p>
-        </div>
-    </div>''';
-    BodyTagUtil.addTag(TagH1(custom));
+void movePage(BuildContext context, Widget widget, String currentTitle) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => widget),
+  ).then(
+    (value) {
+      HeadTagUtil.setTitle(currentTitle);
+      CreateHtml.makeWidgetTree(context);
+    },
+  );
+}
+
+class FirstScreen extends StatefulWidget {
+  const FirstScreen({super.key});
+
+  @override
+  State<FirstScreen> createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends State<FirstScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        HeadTagUtil.setTitle("FirstScreen");
+        CreateHtml.makeWidgetTree(context);
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            key: SeoKey(
+              TagType.div,
+              attributes: const {"customStyle": "custom attributes"},
+            ),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  movePage(context, const SecondScreen(), "flutter_seo title");
+                },
+                child: const Text("btn"),
+              ),
+              Text(
+                "header text h1",
+                key: SeoKey(TagType.h1, text: "header text h1"),
+              ),
+              Text(
+                "header text h2",
+                key: SeoKey(TagType.h2, text: "header text h2"),
+              ),
+              Column(
+                key: SeoKey(TagType.div),
+                children: [
+                  Text("Check 1", key: SeoKey(TagType.p)),
+                  Text("Check 2", key: SeoKey(TagType.p)),
+                ],
+              ),
+              Column(
+                key: SeoKey(TagType.div),
+                children: [
+                  Text("Check 3", key: SeoKey(TagType.p)),
+                  Row(
+                    key: SeoKey(TagType.div),
+                    children: [
+                      Text("Check 4", key: SeoKey(TagType.p)),
+                      Text("Check 8", key: SeoKey(TagType.p)),
+                      SizedBox(
+                        key: SeoKey(TagType.div),
+                        child: Stack(
+                          key: SeoKey(TagType.div),
+                          children: [
+                            Text("Check 9", key: SeoKey(TagType.p)),
+                            Text("Check 10", key: SeoKey(TagType.p)),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                key: SeoKey(TagType.div),
+                children: [
+                  Text("Check 5", key: SeoKey(TagType.p)),
+                  Text("Check 6", key: SeoKey(TagType.p)),
+                ],
+              ),
+              Text("Check P", key: SeoKey(TagType.p)),
+              Container(
+                key: SeoKey(TagType.a, src: "a tag"),
+                child: Text("Check String a tag", key: SeoKey(TagType.p)),
+              ),
+              SizedBox(
+                key: SeoKey(TagType.a, src: "assets/company_device.png"),
+                width: 200,
+                height: 200,
+                child: Image.asset(
+                  key: SeoKey(
+                    TagType.img,
+                    src: "assets/company_device.png",
+                    alt: "Local image",
+                  ),
+                  "assets/company_device.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                key: SeoKey(
+                  TagType.a,
+                  src:
+                      "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+                ),
+                width: 200,
+                height: 200,
+                child: Image.network(
+                  key: SeoKey(
+                    TagType.img,
+                    src:
+                        "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+                    alt: "Network Image",
+                  ),
+                  "https://sailing-it-images.s3.ap-northeast-2.amazonaws.com/logo.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondScreen extends StatefulWidget {
+  const SecondScreen({super.key});
+
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        HeadTagUtil.setTitle("SecondScreen");
+        CreateHtml.makeWidgetTree(context);
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Second Screen"),
+      ),
+      body: Column(
+        children: [
+          Container(
+            key: SeoKey(TagType.div),
+          ),
+          Text(
+            "second",
+            key: SeoKey(TagType.p),
+          ),
+        ],
+      ),
+    );
   }
 }
 

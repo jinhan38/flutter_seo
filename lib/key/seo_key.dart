@@ -19,7 +19,6 @@ class SeoKey extends ValueKey<String> {
     this.text = "",
     this.src = "",
     this.alt = "",
-    // this.className = "",
     String? className,
     Map<String, String>? attributes,
   })  : attributes = attributes ??

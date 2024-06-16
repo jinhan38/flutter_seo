@@ -100,13 +100,29 @@ class CreateHtml {
       } else if (key.tagType == TagType.a) {
         element = html.AnchorElement()
           ..attributes = key.attributes
+          ..text = key.text
           ..href = key.src;
+      } else if (key.tagType == TagType.footer) {
+        element = _createElement(TagType.footer.name)
+          ..attributes = key.attributes;
+      } else if (key.tagType == TagType.nav) {
+        element = _createElement(TagType.nav.name)..attributes = key.attributes;
+      } else if (key.tagType == TagType.ul) {
+        element = _createElement(TagType.ul.name)..attributes = key.attributes;
+      } else if (key.tagType == TagType.li) {
+        var attr = key.attributes;
+        element = _createElement(TagType.li.name)..attributes = attr;
       }
       if (key.className.isNotEmpty) {
         element.className = key.className;
       }
       return element;
     }
+
     return html.DivElement();
+  }
+
+  static html.HtmlElement _createElement(String tagName) {
+    return html.Element.tag(tagName) as html.HtmlElement;
   }
 }

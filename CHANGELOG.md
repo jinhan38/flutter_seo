@@ -30,3 +30,6 @@ Add div tag
 
 ## 0.1.1
 A tag error was fixed. the READMED modified.
+
+## 1.0.0
+Change how tags are created.
